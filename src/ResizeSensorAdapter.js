@@ -1,7 +1,7 @@
 /**
  * Thanks to the marcj's Css-element-queries library (@see: http://marcj.github.io/css-element-queries/),
  * this plugin will detect size modification of an element :
- *   - witout polling (= no timer = native dom even based = no CPU wasted ressources).
+ *   - without polling (= no timer = native dom even based = no CPU wasted ressources).
  *   - Whatever the origin of the size modification (js, css, console, children size modifications,
  *     percentage of a parent element, etc.).
  *
