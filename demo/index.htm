@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            getSize: ResizeSensor jQuery Adapter
+        </title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link href="style.css" rel="stylesheet">
+        <script src="jquery-2.0.3.min.js"></script>
+        <!-- <script src="../src/ElementQueries.js"></script> -->
+        <!-- <script src="../src/ResizeSensor.js"></script> -->
+        <!-- <script src="../src/ResizeSensorAdapter.js"></script> -->
+        <script src="../getSize.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                //catch element (an error will be raised if you try to monitorize something else than div or span).
+                var $elements = $('.sensor').filter('div,span');
+                
+                //initialize the monitoring
+                $elements.resizeSensor();
+
+                //... (later) ...
+                
+                //use "normal" jQuery resize event to catch size modifications
+                $elements.on('resize', {someCustomData: 'bazingua!'}, function(event, data){
+                    var $this = $(this);
+                    //get the "name" of the current element (for debug purpose only, not bulletproof!)
+                    var elemName = $this.attr('id');
+                    if(elemName == undefined){
+                        elemName = $this.attr('class');
+                    }
+                    //construct debug message
+                    var status = '[' + elemName + '] resized: ';
+                    if(data.height > data.lastHeight ){
+                        status += 'Y(expand)';
+                    }else if(data.height < data.lastHeight ){
+                        status += 'Y(shrink)';
+                    }else{
+                        status += 'Y(null)';
+                    }
+                    if(data.width > data.lastWidth ){
+                        status += ' - X(expand).';
+                    }else if(data.width < data.lastWidth ){
+                        status += ' - X(shrink).';
+                    }else{
+                        status += ' - X(null).';
+                    }
+                    //print debug message
+                    console.log(status);
+                });
+
+            });
+        </script>
+    </head>
+    <body>
+        <h1>getSize: ResizeSensor jQuery Adapter</h1>
+        <p>The first textarea won't do anything, the second will fire message in the console on manual resize and the third when your browser window (or if scrolls appears).</p>
+        <textarea id="example1" class="sensor class1 class2"></textarea>
+        <div id="example2" class="sensor class2"><textarea ></textarea></div>
+        <div id="example3" class="sensor"></div>
+    </body>
+
+</html>

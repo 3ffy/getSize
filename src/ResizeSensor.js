@@ -11,10 +11,11 @@
      *
      * @param {Element|Element[]|Elements|jQuery} element
      * @param {Function} callback
-     *
+     * @param {Bool} unique True to make the observer unique on an element, otherwise multiple observers are possible.
+     *  
      * @constructor
      */
-    this.ResizeSensor = function(element, callback) {
+    this.ResizeSensor = function(element, callback, unique) {
         /**
          *
          * @constructor
@@ -26,9 +27,9 @@
             };
 
             var i, j;
-            this.call = function() {
+            this.call = function(e, info) {
                 for (i = 0, j = this.q.length; i < j; i++) {
-                    this.q[i].call();
+                    this.q[i].call(this, info);
                 }
             };
         }
@@ -53,13 +54,15 @@
          * @param {HTMLElement} element
          * @param {Function}    resized
          */
-        function attachResizeEvent(element, resized) {
+        function attachResizeEvent(element, resized, unique) {
             if (!element.resizedAttached) {
                 element.resizedAttached = new EventQueue();
                 element.resizedAttached.add(resized);
-            } else if (element.resizedAttached) {
-                element.resizedAttached.add(resized);
+            } else if (!unique && element.resizedAttached) {
+               element.resizedAttached.add(resized);
                 return;
+            }else{
+                return
             }
 
             element.resizeSensor = document.createElement('div');
@@ -101,8 +104,8 @@
 
             reset();
 
-            var changed = function() {
-                element.resizedAttached.call();
+            var changed = function(info) {
+                element.resizedAttached.call(this, info);
             };
 
             var addEvent = function(el, name, cb) {
@@ -114,15 +117,35 @@
             };
 
             addEvent(expand, 'scroll', function() {
-                if (element.offsetWidth > lastWidth || element.offsetHeight > lastHeight) {
-                    changed();
+                var width = element.offsetWidth;
+                var height = element.offsetHeight;
+                if ( width > lastWidth || height > lastHeight) {
+                    var info = {
+                        // type: 'expand', //debug
+                        element: element,
+                        width: width,
+                        lastWidth: lastWidth,
+                        height: height,
+                        lastHeight: lastHeight
+                    };
+                    changed(info);
                 }
                 reset();
             });
 
             addEvent(shrink, 'scroll',function() {
+                var width = element.offsetWidth;
+                var height = element.offsetHeight;
                 if (element.offsetWidth < lastWidth || element.offsetHeight < lastHeight) {
-                    changed();
+                    var info = {
+                        // type: 'shrink', //debug
+                        element: element,
+                        width: width,
+                        lastWidth: lastWidth,
+                        height: height,
+                        lastHeight: lastHeight
+                    };
+                    changed(info);
                 }
                 reset();
             });
@@ -134,10 +157,10 @@
             ) {
             var i = 0, j = element.length;
             for (; i < j; i++) {
-                attachResizeEvent(element[i], callback);
+                attachResizeEvent(element[i], callback, unique);
             }
         } else {
-            attachResizeEvent(element, callback);
+            attachResizeEvent(element, callback, unique);
         }
     }
 

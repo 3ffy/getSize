@@ -1,0 +1,27 @@
+textarea
+{
+    padding: 5px;
+    color: red;
+}
+
+.class1
+{
+    background-color: black;
+}
+
+textarea.jinni-shadow
+{
+    color: #fff;
+}
+
+#example3
+{
+    display: block;
+    width: 70%;
+    height: 150px;
+    border: 1px solid red;
+}
+
+div.sensor{
+    display:inline-block;
+}
