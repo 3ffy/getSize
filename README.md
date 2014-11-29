@@ -17,7 +17,7 @@ This plugin will detect size modification of an element :
 - You can detach the jQuery [resize] event (ressources will be consumed by the plugin, but you won't receive notifications).
 - This method is "naive", all modifications will be thrown without throttle pattern (but you can use your own one in addition of course). 
  
-> PS: Be aware that if your element is in display:block your height will change but never your width (= 100% of the parent), no matter if you resize the "visible" content (ex: one if it's children). It's tottaly logical but it's a commun mistake.
+> PS: Be aware that if your element is in display:block your height will change but never your width (= 100% of the parent), no matter if you resize the "visible" content (ex: one if it's children). It's totally logical but it's a commun mistake.
 
 Usage 
 -------
