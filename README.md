@@ -38,6 +38,11 @@ $(document).ready(function() {
         console.log('The element has been resized !');
     });
 
+    //or
+    $elements.resize(function(event, data){
+        console.log('The element has been resized !');
+    });
+    
 });
 ```
 
